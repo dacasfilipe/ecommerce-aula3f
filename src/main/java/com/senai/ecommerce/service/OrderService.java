@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,9 +32,10 @@ public class OrderService {
         return orderToDTO(order);
     }
 
-    @Transactional()
+    @Transactional
     public OrderDTO save(OrderDTO orderDTO) {
         Order order = DTOToOrder(orderDTO);
+        order.setMoment(LocalDateTime.now());
         Order savedOrder = orderRepository.save(order);
         return orderToDTO(savedOrder);
     }
@@ -42,8 +44,6 @@ public class OrderService {
     public OrderDTO update(Long id,OrderDTO orderDTO) {
         Order order = orderRepository.findById(id).orElseThrow();
         order.setStatus(orderDTO.getStatus());
-        order.setMoment(orderDTO.getMoment());
-        order.setId(id);
         order = orderRepository.save(order);
         return orderToDTO(order);
     }
@@ -55,8 +55,6 @@ public class OrderService {
         order.setStatus(orderDTO.getStatus());
         return order;
     }
-
-
     public OrderDTO orderToDTO(Order order) {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());

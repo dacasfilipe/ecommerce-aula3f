@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -12,7 +13,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Instant moment;
+    private LocalDateTime moment;
     private OrderStatus status;
 
     @ManyToOne
@@ -21,6 +22,4 @@ public class Order {
     //cascade serve to delete the order when the user is deleted
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
-
-
 }
